@@ -1,7 +1,7 @@
-juan carlos,luis rao
-ana maria, pedro juan
-jean, camillo
-luis rao,juan carlos
-juan carlos, jean
-jean,ana maria
-camillo, luis rao
+juan c,ana
+ana,juan c
+carlos,juan c
+carlos,ana
+jean,ana
+jean,juan c
+melvin,ana
