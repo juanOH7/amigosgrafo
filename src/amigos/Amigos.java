@@ -23,7 +23,7 @@ public class Amigos {
      */
     public static void main(String[] args) throws FileNotFoundException {
         // TODO code application logic here
-       boolean cont = true, cont2 = true, cont3 = true;
+        boolean cont = true, cont2 = true, cont3 = true;
         String resp2;
         int idEdg = 0, opcMe, pos1, pos2;
         Graph graph = new MultiGraph("grafo");
@@ -59,16 +59,22 @@ public class Amigos {
                 graph.display();
             }
             if (opcMe == 2) {
-                int pos = 1;
+                int pos;
                 while (cont2) {
+                    pos = 1;
                     for (Node node : graph) {
                         System.out.println(pos + "  " + node.getId());
                         pos++;
                     }
                     System.out.print("Primera Persona: ");
-                    pos1 = sc2.nextInt();
+                    pos1 = sc2.nextInt() - 1;
                     System.out.print("Segunda Persona: ");
-                    pos2 = sc2.nextInt();
+                    pos2 = sc2.nextInt() - 1;
+                    if (graph.getNode(pos1).hasEdgeToward(pos2)) {
+                        System.out.println("Si son amigos");
+                    }else{
+                        System.out.println("No son amigos");
+                    }
                     System.out.println("Continuar [S/N]");
                     resp2 = sc2.next();
                     cont2 = (resp2.equals("S") || resp2.equals("s"));
@@ -83,5 +89,5 @@ public class Amigos {
         } while (cont);
 
     }
-    
+
 }
