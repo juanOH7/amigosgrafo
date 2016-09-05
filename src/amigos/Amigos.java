@@ -7,12 +7,10 @@ package amigos;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Random;
 import java.util.Scanner;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.ui.spriteManager.SpriteManager;
 
 /**
  *
@@ -25,37 +23,65 @@ public class Amigos {
      */
     public static void main(String[] args) throws FileNotFoundException {
         // TODO code application logic here
-        Random generator = new Random();
-        int idEdg = 0;
+       boolean cont = true, cont2 = true, cont3 = true;
+        String resp2;
+        int idEdg = 0, opcMe, pos1, pos2;
         Graph graph = new MultiGraph("grafo");
         File arc = new File("amigos.txt");
         Scanner sc = new Scanner(arc);
         Scanner sc2 = new Scanner(System.in);
-        while (sc.hasNextLine()) {       
+        while (sc.hasNextLine()) {
             String comp = sc.nextLine();
             String divCom[] = comp.split(",");
             if ((graph.getNode(divCom[0]) == null) && (graph.getNode(divCom[1]) == null)) {
                 graph.addNode(divCom[0]);
                 graph.addNode(divCom[1]);
                 graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
-            }else if ((graph.getNode(divCom[0]) == null)) {
+            } else if ((graph.getNode(divCom[0]) != null) && (graph.getNode(divCom[1]) == null)) {
                 graph.addNode(divCom[1]);
                 graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
-            }else if ((graph.getNode(divCom[1]) == null)) {
+            } else if ((graph.getNode(divCom[1]) != null) && (graph.getNode(divCom[0]) == null)) {
                 graph.addNode(divCom[0]);
                 graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
-            }else{
+            } else {
                 graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
             }
-            
- 
             idEdg++;
         }
-       
         for (Node node : graph) {
             node.addAttribute("ui.label", node.getId());
         }
-        graph.display();
+        
+        do {
+            System.out.println("1-Ver Grafo\n2-¿Es ___ amigo de ___?\n3-¿Pueden ser Amigos?\n4-Salir");
+            opcMe = sc2.nextInt();
+            if (opcMe == 1) {
+                graph.display();
+            }
+            if (opcMe == 2) {
+                int pos = 1;
+                while (cont2) {
+                    for (Node node : graph) {
+                        System.out.println(pos + "  " + node.getId());
+                        pos++;
+                    }
+                    System.out.print("Primera Persona: ");
+                    pos1 = sc2.nextInt();
+                    System.out.print("Segunda Persona: ");
+                    pos2 = sc2.nextInt();
+                    System.out.println("Continuar [S/N]");
+                    resp2 = sc2.next();
+                    cont2 = (resp2.equals("S") || resp2.equals("s"));
+                }
+            }
+            if (opcMe == 3) {
+
+            }
+            if (opcMe <= 0 || opcMe > 3) {
+                cont = false;
+            }
+        } while (cont);
+
     }
     
 }
