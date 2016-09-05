@@ -8,6 +8,7 @@ package amigos;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -36,24 +37,24 @@ public class Amigos {
             if ((graph.getNode(divCom[0]) == null) && (graph.getNode(divCom[1]) == null)) {
                 graph.addNode(divCom[0]);
                 graph.addNode(divCom[1]);
-                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
+                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true).addAttribute("length", 1);
             } else if ((graph.getNode(divCom[0]) != null) && (graph.getNode(divCom[1]) == null)) {
                 graph.addNode(divCom[1]);
-                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
+                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true).addAttribute("length", 1);
             } else if ((graph.getNode(divCom[1]) != null) && (graph.getNode(divCom[0]) == null)) {
                 graph.addNode(divCom[0]);
-                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
+                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true).addAttribute("length", 1);
             } else {
-                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true);
+                graph.addEdge(String.valueOf(idEdg), divCom[0], divCom[1], true).addAttribute("length", 1);
             }
             idEdg++;
         }
         for (Node node : graph) {
             node.addAttribute("ui.label", node.getId());
         }
-        
+
         do {
-            System.out.println("1-Ver Grafo\n2-¿Es ___ amigo de ___?\n3-¿Pueden ser Amigos?\n4-Salir");
+            System.out.println("1-Ver Grafo\n2-¿Es ___ amigo de ___?\n3-Salir");
             opcMe = sc2.nextInt();
             if (opcMe == 1) {
                 graph.display();
@@ -72,18 +73,21 @@ public class Amigos {
                     pos2 = sc2.nextInt() - 1;
                     if (graph.getNode(pos1).hasEdgeToward(pos2)) {
                         System.out.println("Si son amigos");
-                    }else{
+                    } else {
+                        Dijkstra path = new Dijkstra(Dijkstra.Element.EDGE, null, "length");
+                        path.init(graph);
+                        path.setSource(graph.getNode(pos1));
+                        path.compute();
                         System.out.println("No son amigos");
+                        System.out.println(path.getPath(graph.getNode(pos2)));
+                        System.out.println("Pero con este camino lo pueden ser");
                     }
                     System.out.println("Continuar [S/N]");
                     resp2 = sc2.next();
                     cont2 = (resp2.equals("S") || resp2.equals("s"));
                 }
             }
-            if (opcMe == 3) {
-
-            }
-            if (opcMe <= 0 || opcMe > 3) {
+            if (opcMe <= 0 || opcMe > 2) {
                 cont = false;
             }
         } while (cont);
